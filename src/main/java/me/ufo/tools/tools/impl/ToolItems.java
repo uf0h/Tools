@@ -18,22 +18,17 @@ public class ToolItems {
     private HashMap<ToolType, Tool> tools = new HashMap<>();
 
     public void build() {
-        ConfigurationSection vertical = INSTANCE.getConfig().getConfigurationSection("TOOLS");
+        ConfigurationSection TOOLS = INSTANCE.getConfig().getConfigurationSection("TOOLS");
 
-        vertical.getKeys(false).forEach(key -> {
+        TOOLS.getKeys(false).forEach(key -> {
             String name = INSTANCE.getConfig().getString("TOOLS." + key + ".name");
             Material material = Material.getMaterial(INSTANCE.getConfig().getString("TOOLS." + key + ".material"));
 
-//            ItemStack item = new ItemStack(material);
-//            ItemMeta itemMeta = item.getItemMeta();
-//            itemMeta.setDisplayName(Style.translate(name));
-//            itemMeta.setLore(Style.translateLines(INSTANCE.getConfig().getStringList("TOOLS." + key + ".lore")));
-//            item.setItemMeta(itemMeta);
-
             ItemStack item =
-                    new NBTItem(new ItemBuilder(new ItemStack(material))
-                            .setName(Style.translate(name))
-                            .setLore(Style.translateLines(INSTANCE.getConfig().getStringList("TOOLS." + key + ".lore"))))
+                    new NBTItem(
+                            new ItemBuilder(new ItemStack(material))
+                                    .setName(Style.translate(name))
+                                    .setLore(Style.translateLines(INSTANCE.getConfig().getStringList("TOOLS." + key + ".lore"))))
                             .setInt(key.toUpperCase(), 0).setDouble("unique", Math.random()).build();
 
             tools.put(ToolType.valueOf(key.toUpperCase()), new Tool(name, item, ToolType.valueOf(key.toUpperCase())));
