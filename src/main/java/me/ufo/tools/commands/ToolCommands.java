@@ -14,7 +14,7 @@ public class ToolCommands {
 
     @Command(names = "tools", permissionNode = "tools.admin")
     public static void tools(CommandSender sender) {
-        sender.sendMessage(new String[]{
+        sender.sendMessage(new String[] {
                 Style.getBorderLine(),
                 Style.translate("&e/tools list &7- &dList all tools."),
                 Style.translate("&e/tools give <tool> <target> &7- &dGive tool to player."),
@@ -24,7 +24,7 @@ public class ToolCommands {
 
     @Command(names = "tools list", permissionNode = "tools.admin")
     public static void tools_list(CommandSender sender) {
-        sender.sendMessage(new String[]{
+        sender.sendMessage(new String[] {
                 Style.getBorderLine(),
                 Style.translate("&e" + Arrays.toString(ToolType.values())),
                 Style.getBorderLine()

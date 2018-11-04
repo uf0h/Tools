@@ -1,5 +1,6 @@
 package me.ufo.tools;
 
+import me.ufo.tools.integration.Econ;
 import me.ufo.tools.integration.Factions;
 import me.ufo.tools.tools.impl.ToolItems;
 import me.ufo.tools.util.command.CommandHandler;
@@ -21,6 +22,9 @@ public class Tools extends JavaPlugin {
         long startTime = System.currentTimeMillis();
 
         instance = this;
+
+        Econ econ = new Econ();
+        econ.setup();
 
         Factions factions = new Factions();
         factions.setup();
