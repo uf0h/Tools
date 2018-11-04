@@ -1,7 +1,9 @@
 package me.ufo.tools;
 
+import com.sun.org.apache.bcel.internal.generic.RET;
 import me.ufo.tools.integration.Econ;
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.obj.impl.Objects;
 import me.ufo.tools.tools.impl.ToolItems;
 import me.ufo.tools.util.command.CommandHandler;
 import me.ufo.tools.util.listener.ListenerHandler;
@@ -12,6 +14,8 @@ public class Tools extends JavaPlugin {
     private static Tools instance;
 
     private ToolItems toolItems;
+
+    private Objects objects;
 
     public static Tools getInstance() {
         return instance;
@@ -39,6 +43,9 @@ public class Tools extends JavaPlugin {
         toolItems = new ToolItems();
         toolItems.build();
 
+        objects = new Objects();
+        objects.build();
+
         this.getLogger().info("Successfully loaded. Took (" + (System.currentTimeMillis() - startTime) + "ms).");
     }
 
@@ -49,6 +56,10 @@ public class Tools extends JavaPlugin {
 
     public ToolItems getToolItems() {
         return toolItems;
+    }
+
+    public Objects getObjects() {
+        return objects;
     }
 
 }

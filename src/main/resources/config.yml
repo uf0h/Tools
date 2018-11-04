@@ -1,11 +1,16 @@
 TOOLS:
-  Sellwand:
+  SELLWAND:
     name: "&eSellwand"
     lore:
     - "&dRight click to sell all items in the chest."
     material: DIAMOND_HOE
-  Craftwand:
+    multiplier: 1.5
+  CRAFTWAND:
     name: "&eCraftwand"
     lore:
     - "&dRight click to craft all items in the chest."
     material: BLAZE_ROD
+
+SELLABLEITEMS:
+  - IRON_INGOT,20.0
+  - GOLD_INGOT,100.0

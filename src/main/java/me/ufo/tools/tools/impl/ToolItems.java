@@ -29,9 +29,9 @@ public class ToolItems {
                             new ItemBuilder(new ItemStack(material))
                                     .setName(Style.translate(name))
                                     .setLore(Style.translateLines(INSTANCE.getConfig().getStringList("TOOLS." + key + ".lore"))))
-                            .setInt(key.toUpperCase(), 0).setDouble("unique", Math.random()).build();
+                            .setInt(key, 0).setDouble("unique", Math.random()).build();
 
-            tools.put(ToolType.valueOf(key.toUpperCase()), new Tool(name, item, ToolType.valueOf(key.toUpperCase())));
+            tools.put(ToolType.valueOf(key), new Tool(name, item, ToolType.valueOf(key)));
         });
 
     }

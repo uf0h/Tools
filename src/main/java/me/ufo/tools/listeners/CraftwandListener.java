@@ -8,14 +8,14 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class SellwandListener implements Listener {
+public class CraftwandListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         ItemStack item = event.getPlayer().getItemInHand();
         if (item != null && item.hasItemMeta()) {
             NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.SELLWAND.toString())) {
+            if (nbtItem.hasKey(ToolType.CRAFTWAND.toString())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);
 
