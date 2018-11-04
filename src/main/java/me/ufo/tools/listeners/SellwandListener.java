@@ -13,9 +13,8 @@ public class SellwandListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         ItemStack item = event.getPlayer().getItemInHand();
-        NBTItem nbtItem = new NBTItem(item);
-
         if (item != null && item.hasItemMeta()) {
+            NBTItem nbtItem = new NBTItem(item);
             if (nbtItem.hasKey(ToolType.SELLWAND.toString())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);

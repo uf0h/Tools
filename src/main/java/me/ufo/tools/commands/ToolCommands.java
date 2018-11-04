@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class ToolCommands {
 
-    @Command(names = "tools")
+    @Command(names = "tools", permissionNode = "tools.admin")
     public static void tools(CommandSender sender) {
         sender.sendMessage(new String[]{
                 Style.getBorderLine(),
@@ -22,7 +22,7 @@ public class ToolCommands {
         });
     }
 
-    @Command(names = "tools list")
+    @Command(names = "tools list", permissionNode = "tools.admin")
     public static void tools_list(CommandSender sender) {
         sender.sendMessage(new String[]{
                 Style.getBorderLine(),
@@ -31,7 +31,7 @@ public class ToolCommands {
         });
     }
 
-    @Command(names = "tools give", permissionNode = "tools.give")
+    @Command(names = "tools give", permissionNode = "tools.admin")
     public static void tools_give(CommandSender sender, @Parameter(name = "tool") Tool tool, @Parameter(name = "target") Player target) {
         target.getInventory().addItem(tool.getItemStack().clone());
 
