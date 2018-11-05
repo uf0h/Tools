@@ -1,9 +1,16 @@
 package me.ufo.tools.integration;
 
+import com.massivecraft.factions.listeners.FactionsBlockListener;
 import me.ufo.tools.Tools;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 public class Factions {
+
+    public static boolean playerCanPlaceHere(Player player, Block block, String action) {
+        return FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), action, true);
+    }
 
     public void setup() {
         if (!setupFactions()) {
