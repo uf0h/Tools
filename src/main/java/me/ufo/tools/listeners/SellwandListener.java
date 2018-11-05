@@ -1,11 +1,16 @@
 package me.ufo.tools.listeners;
 
+import me.ufo.tools.Tools;
+import me.ufo.tools.integration.Econ;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class SellwandListener implements Listener {
@@ -18,10 +23,36 @@ public class SellwandListener implements Listener {
             if (nbtItem.hasKey(ToolType.SELLWAND.toString())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);
+                    if (event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
+                        Chest chest = (Chest) event.getClickedBlock().getState();
+                        Inventory inventory = chest.getInventory();
 
+                        double cost = 0.0;
+
+                        for (int i = 0; i < inventory.getSize(); i++) {
+                            if (inventory.getItem(i) == null) continue;
+
+                            ItemStack itemStack = inventory.getItem(i);
+                            if (isSellable(itemStack.getType())) {
+                                cost += getSellableItemCost(itemStack.getType()) * itemStack.getAmount();
+                                inventory.setItem(i, new ItemStack(Material.AIR));
+                            }
+                        }
+
+                        Econ.depositAmountToPlayer(event.getPlayer(), cost);
+
+                    }
                 }
             }
         }
+    }
+
+    private boolean isSellable(Material material) {
+        return Tools.getInstance().getExtras().getSellableItems().containsKey(material);
+    }
+
+    private Double getSellableItemCost(Material material) {
+        return Tools.getInstance().getExtras().getSellableItems().get(material);
     }
 
 }

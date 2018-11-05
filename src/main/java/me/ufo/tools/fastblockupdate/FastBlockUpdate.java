@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 /**
  * @author LilProteinShake
- * @github https://github.com/ProteinDev
+ * @github https://github.com/ProteinDev/
  * @mcmarket https://www.mc-market.org/members/130554/
  */
 public interface FastBlockUpdate {
