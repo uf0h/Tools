@@ -4,6 +4,7 @@ import me.ufo.tools.Tools;
 import me.ufo.tools.integration.Econ;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
+import me.ufo.tools.util.items.Ref;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.text.DecimalFormat;
 
 public class SellwandListener implements Listener {
 
@@ -39,7 +42,10 @@ public class SellwandListener implements Listener {
                             }
                         }
 
-                        Econ.depositAmountToPlayer(event.getPlayer(), cost);
+                        if (cost > 0) {
+                            Econ.depositAmountToPlayer(event.getPlayer(), cost);
+                            Ref.sendActionBar(event.getPlayer(), "&a&l+$" + new DecimalFormat(".##").format(cost));
+                        }
 
                     }
                 }

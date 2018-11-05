@@ -1,5 +1,6 @@
 package me.ufo.tools.util.items;
 
+import me.ufo.tools.util.Style;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -80,7 +81,7 @@ public class Ref {
     }
 
     public static void sendActionBar(Player toPlayer, String withMessage) {
-        actionBarSender.accept(toPlayer, withMessage);
+        actionBarSender.accept(toPlayer, Style.translate(withMessage));
     }
 
     public static Class<?> getNMS(String classPath) {
