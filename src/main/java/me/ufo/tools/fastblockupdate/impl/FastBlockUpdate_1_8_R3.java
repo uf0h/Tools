@@ -13,6 +13,8 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 /**
  * @author LilProteinShake
+ * @github https://github.com/ProteinDev
+ * @mcmarket https://www.mc-market.org/members/130554/
  */
 public class FastBlockUpdate_1_8_R3 implements FastBlockUpdate {
 
