@@ -99,8 +99,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addEnchantment(Enchantment ench, int level) {
-        meta.addEnchant(ench, level, false);
-        return this;
+        if (ench != null) {
+            meta.addEnchant(ench, level, false);
+            return this;
+        } else {
+            return null;
+        }
     }
 
 }

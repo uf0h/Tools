@@ -5,6 +5,7 @@ public enum ToolType {
     SELLWAND,
     HARVESTER,
     CRAFTWAND,
-    LIGHTNINGWAND;
+    LIGHTNINGWAND,
+    TRENCHPICK;
 
 }

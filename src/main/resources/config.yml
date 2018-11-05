@@ -10,6 +10,14 @@ TOOLS:
     lore:
     - "&dRight click to craft all items in the chest."
     material: BLAZE_ROD
+  TRENCHPICK:
+    name: "&eTrench Pick"
+    lore:
+    - "&dMines all blocks in a 5x5 area."
+    material: DIAMOND_PICKAXE
+    enchantments:
+      - DIG_SPEED,5
+      - DURABILITY,3
 
 SELLABLEITEMS:
   - IRON_INGOT,20.0
