@@ -22,9 +22,10 @@ public class CraftwandListener implements Listener {
     private final Set<Material> craftables = Stream.of(
             Material.IRON_INGOT,
             Material.GOLD_INGOT,
-            Material.REDSTONE).collect(Collectors.toCollection(HashSet::new));
+            Material.REDSTONE
+    ).collect(Collectors.toCollection(HashSet::new));
 
-    public static HashMap<Material, Integer> amountOfItem;
+    private HashMap<Material, Integer> amountOfItem;
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
