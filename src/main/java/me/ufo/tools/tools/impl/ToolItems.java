@@ -39,7 +39,9 @@ public class ToolItems {
             item = new NBTItem(new ItemBuilder(item)
                     .setName(Style.translate(name))
                     .setLore(Style.translateLines(INSTANCE.getConfig().getStringList("TOOLS." + key + ".lore"))))
-                    .setInt(key, 0).setDouble("unique", Math.random()).build();
+                    .setString("tooltype", key)
+                    .setInt(key, 0)
+                    .setDouble("unique", Math.random()).build();
 
             tools.put(ToolType.valueOf(key), new Tool(name, item, ToolType.valueOf(key)));
         });
