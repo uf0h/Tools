@@ -25,7 +25,8 @@ public class CraftwandListener implements Listener {
             Material.REDSTONE
     ).collect(Collectors.toCollection(HashSet::new));
 
-    private HashMap<Material, Integer> amountOfItem;
+    // Cache of craftables in players inventory.
+    private HashMap<Material, Integer> inventoryCache;
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -39,7 +40,7 @@ public class CraftwandListener implements Listener {
                         Chest chest = (Chest) event.getClickedBlock().getState();
                         Inventory inventory = chest.getInventory();
 
-                        amountOfItem = new HashMap<>();
+                        inventoryCache = new HashMap<>();
 
                         for (int i = 0; i < inventory.getSize(); i++) {
                             if (inventory.getItem(i) == null) continue;
@@ -47,10 +48,10 @@ public class CraftwandListener implements Listener {
                             ItemStack itemStack = inventory.getItem(i);
                             if (canBeCrafted(itemStack.getType())) {
                                 if (containsMaterialInCache(itemStack.getType())) {
-                                    int currentAmountOfItems = amountOfItem.get(itemStack.getType());
-                                    amountOfItem.put(itemStack.getType(), currentAmountOfItems + itemStack.getAmount());
+                                    int currentAmountOfItems = inventoryCache.get(itemStack.getType());
+                                    inventoryCache.put(itemStack.getType(), currentAmountOfItems + itemStack.getAmount());
                                 } else {
-                                    amountOfItem.put(itemStack.getType(), itemStack.getAmount());
+                                    inventoryCache.put(itemStack.getType(), itemStack.getAmount());
                                 }
                             }
 
@@ -59,8 +60,8 @@ public class CraftwandListener implements Listener {
                             }
                         }
 
-                        if (!amountOfItem.isEmpty()) {
-                            amountOfItem.forEach((itemStack, amount) -> {
+                        if (!inventoryCache.isEmpty()) {
+                            inventoryCache.forEach((itemStack, amount) -> {
                                 Material block;
                                 int blocks = amount / 9;
                                 int remainder = amount % 9;
@@ -87,7 +88,7 @@ public class CraftwandListener implements Listener {
                             });
                         }
 
-                        amountOfItem = null;
+                        inventoryCache = null;
                     }
                 }
             }
@@ -99,7 +100,7 @@ public class CraftwandListener implements Listener {
     }
 
     private boolean containsMaterialInCache(Material material) {
-        return amountOfItem.containsKey(material);
+        return inventoryCache.containsKey(material);
     }
 
 }
