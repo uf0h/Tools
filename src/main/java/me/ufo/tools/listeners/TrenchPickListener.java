@@ -2,6 +2,7 @@ package me.ufo.tools.listeners;
 
 import me.ufo.tools.Tools;
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
 import org.bukkit.Location;
@@ -18,6 +19,8 @@ public class TrenchPickListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
+
         ItemStack item = event.getPlayer().getItemInHand();
         if (item != null && item.hasItemMeta()) {
             NBTItem nbtItem = new NBTItem(item);
@@ -34,7 +37,9 @@ public class TrenchPickListener implements Listener {
         int RADIUS = 2;
         for (int x = location.getBlockX() - RADIUS; x <= location.getBlockX() + RADIUS; x++) {
             for (int z = location.getBlockZ() - RADIUS; z <= location.getBlockZ() + RADIUS; z++) {
-                if (Factions.playerCanPlaceHere(player, new Location(location.getWorld(), x, location.getY(), z).getBlock(), "break")) {
+                if (Factions.playerCanPlaceHere(player, new Location(location.getWorld(), x, location.getY(), z).getBlock(), "break") &&
+                        Worldguard.playerCanPlaceHere(player, new Location(location.getWorld(), x, location.getY(), z).getBlock())) {
+
                     for (int y = location.getBlockY() - RADIUS; y <= location.getBlockY() + RADIUS; y++) {
                         Location block = new Location(location.getWorld(), x, y, z);
 
