@@ -2,4 +2,4 @@ name: Tools
 author: ufo
 version: 1.0
 main: me.ufo.tools.Tools
-depend: [Factions]
+depend: [Factions, WorldGuard, Vault]
