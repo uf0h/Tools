@@ -3,7 +3,7 @@ package me.ufo.tools.tools;
 public enum ToolType {
 
     SELLWAND,
-    HARVESTER,
+    HARVESTERHOE,
     CRAFTWAND,
     LIGHTNINGWAND,
     TRENCHPICK;

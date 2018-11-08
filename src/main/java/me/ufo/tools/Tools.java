@@ -4,6 +4,7 @@ import me.ufo.tools.fastblockupdate.FastBlockUpdate;
 import me.ufo.tools.fastblockupdate.impl.FastBlockUpdate_1_8_R3;
 import me.ufo.tools.integration.Econ;
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.impl.Extras;
 import me.ufo.tools.tools.impl.ToolItems;
 import me.ufo.tools.util.command.CommandHandler;
@@ -34,6 +35,9 @@ public class Tools extends JavaPlugin {
 
         Factions factions = new Factions();
         factions.setup();
+
+        Worldguard worldguard = new Worldguard();
+        worldguard.setup();
 
         this.saveDefaultConfig();
 

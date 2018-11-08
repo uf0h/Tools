@@ -18,6 +18,11 @@ TOOLS:
     enchantments:
       - DIG_SPEED,5
       - DURABILITY,3
+  HARVESTERHOE:
+    name: "&eHarvester Hoe"
+    lore:
+    - "&dAutomatically pick up all sugarcane."
+    material: DIAMOND_HOE
 
 SELLABLEITEMS:
   - IRON_INGOT,20.0
