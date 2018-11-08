@@ -1,5 +1,7 @@
 package me.ufo.tools.listeners;
 
+import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
 import org.bukkit.Material;
@@ -37,6 +39,10 @@ public class CraftwandListener implements Listener {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);
                     if (event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
+
+                        if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock(), "use")) return;
+                        if (!Worldguard.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
+
                         Chest chest = (Chest) event.getClickedBlock().getState();
                         Inventory inventory = chest.getInventory();
 
