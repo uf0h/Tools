@@ -31,6 +31,12 @@ TOOLS:
     enchantments:
     - KNOCKBACK,2
     cooldown: 50000
+  SANDWAND:
+    name: "&eSand Wand"
+    lore:
+    - "&dRight click a sand pillar to remove it."
+    material: DIAMOND_HOE
+    cooldown: 50000
 
 COOLDOWN_MESSAGE: "&cYou have &e%time% &cleft before you can use this again."
 

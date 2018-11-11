@@ -61,8 +61,9 @@ public class LightningwandListener implements Listener {
                         }
 
                     } else {
-                        player.getWorld().strikeLightning(player.getTargetBlock((Set<Material>) null, 10).getLocation());
                         lightningTimestamps.put(player.getUniqueId(), System.currentTimeMillis());
+
+                        player.getWorld().strikeLightning(player.getTargetBlock((Set<Material>) null, 10).getLocation());
                     }
                 }
             }

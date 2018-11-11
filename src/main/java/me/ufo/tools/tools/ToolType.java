@@ -6,6 +6,7 @@ public enum ToolType {
     HARVESTERHOE,
     CRAFTWAND,
     LIGHTNINGWAND,
-    TRENCHPICK;
+    TRENCHPICK,
+    SANDWAND;
 
 }
