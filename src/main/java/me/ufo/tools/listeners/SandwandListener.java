@@ -64,7 +64,7 @@ public class SandwandListener implements Listener {
                         final Queue<Block> blocks = new LinkedList<>();
                         getSandBlocks(event.getClickedBlock(), blocks::add);
 
-                        Bukkit.getServer().getScheduler().runTaskAsynchronously(Tools.getInstance(), () -> blocks.forEach(block -> Tools.getInstance().getFastBlockUpdate().run(block.getLocation(), Material.AIR)));
+                        Bukkit.getServer().getScheduler().runTask(Tools.getInstance(), () -> blocks.forEach(block -> block.setType(Material.AIR)));
                     }
                 }
             }
