@@ -1,6 +1,8 @@
 package me.ufo.tools.listeners;
 
 import me.ufo.tools.Tools;
+import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.Style;
 import me.ufo.tools.util.TimeUtil;
@@ -45,6 +47,9 @@ public class SandwandListener implements Listener {
                     event.setCancelled(true);
 
                     if (event.getClickedBlock() == null) return;
+
+                    if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock(), "use")) return;
+                    if (!Worldguard.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
 
                     final Player player = event.getPlayer();
 
