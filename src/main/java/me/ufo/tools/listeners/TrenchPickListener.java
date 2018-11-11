@@ -2,6 +2,7 @@ package me.ufo.tools.listeners;
 
 import me.ufo.tools.Tools;
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
@@ -47,6 +48,8 @@ public class TrenchPickListener implements Listener {
                         if (isNotBreakable(block.getBlock().getType())) continue;
 
                         Tools.getInstance().getFastBlockUpdate().run(block, Material.AIR);
+
+                        Mcmmo.addXPToPlayer(player, "Mining", 50, "UNKNOWN");
                     }
                 }
             }

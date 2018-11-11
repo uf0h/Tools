@@ -1,6 +1,7 @@
 package me.ufo.tools.listeners;
 
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
@@ -92,6 +93,8 @@ public class HarvesterHoeListener implements Listener {
                     if (amount > 0) {
                         ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
                         player.getInventory().addItem(sugarcane);
+
+                        Mcmmo.addXPToPlayer(player, "Herbalism", amount, "UNKNOWN");
                     }
                 }
             }
