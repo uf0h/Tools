@@ -104,8 +104,8 @@ public class HarvesterHoeListener implements Listener {
     private int breakCane(List<Block> line) {
         TreeMap<Double, Block> tree = new TreeMap<>(Collections.reverseOrder());
         int amountBroken = 0;
-        for(Block block : line) {
-            if(block.getRelative(BlockFace.DOWN).getType() == Material.SUGAR_CANE_BLOCK) {
+        for (Block block : line) {
+            if (block.getRelative(BlockFace.DOWN).getType() == Material.SUGAR_CANE_BLOCK) {
                 amountBroken++;
 
                 tree.put(block.getY() + new Random().nextDouble(), block);
@@ -113,7 +113,7 @@ public class HarvesterHoeListener implements Listener {
             }
         }
 
-        for(double d : tree.keySet()) {
+        for (double d : tree.keySet()) {
             Block bl = tree.get(d);
             bl.getLocation().getWorld().playEffect(bl.getLocation().add(0.5, 0.5, 0.5), Effect.HAPPY_VILLAGER, 0);
             bl.setType(Material.AIR);

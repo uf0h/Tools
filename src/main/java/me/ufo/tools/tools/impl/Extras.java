@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Extras {
 
-    private Tools INSTANCE = Tools.getInstance();
     public HashMap<Material, Double> sellableItems = new HashMap<>();
+    private Tools INSTANCE = Tools.getInstance();
 
     public void build() {
         List<String> sellableitemsList = INSTANCE.getConfig().getStringList("SELLABLEITEMS");

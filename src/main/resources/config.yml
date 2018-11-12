@@ -16,8 +16,8 @@ TOOLS:
     - "&dMines all blocks in a 5x5 area."
     material: DIAMOND_PICKAXE
     enchantments:
-      - DIG_SPEED,5
-      - DURABILITY,3
+    - DIG_SPEED,5
+    - DURABILITY,3
   HARVESTERHOE:
     name: "&eHarvester Hoe"
     lore:
@@ -41,5 +41,5 @@ TOOLS:
 COOLDOWN_MESSAGE: "&cYou have &e%time% &cleft before you can use this again."
 
 SELLABLEITEMS:
-  - IRON_INGOT,20.0
-  - GOLD_INGOT,100.0
+- IRON_INGOT,20.0
+- GOLD_INGOT,100.0
