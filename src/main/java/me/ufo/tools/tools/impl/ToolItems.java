@@ -33,7 +33,7 @@ public class ToolItems {
             item = new ItemStack(material);
 
             if (enchantments != null) {
-                enchantments.forEach(enchantment -> item.addEnchantment(Enchantment.getByName(enchantment.substring(0, enchantment.indexOf(","))), Integer.valueOf(enchantment.substring(enchantment.indexOf(",") + 1))));
+                enchantments.forEach(enchantment -> item.addUnsafeEnchantment(Enchantment.getByName(enchantment.substring(0, enchantment.indexOf(","))), Integer.valueOf(enchantment.substring(enchantment.indexOf(",") + 1))));
             }
 
             item = new NBTItem(new ItemBuilder(item)
