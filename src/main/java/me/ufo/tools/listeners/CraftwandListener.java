@@ -24,7 +24,10 @@ public class CraftwandListener implements Listener {
     private final Set<Material> craftables = Stream.of(
             Material.IRON_INGOT,
             Material.GOLD_INGOT,
-            Material.REDSTONE
+            Material.REDSTONE,
+            Material.SULPHUR,
+            Material.DIAMOND,
+            Material.EMERALD
     ).collect(Collectors.toCollection(HashSet::new));
 
     // Cache of craftables in players inventory.
@@ -81,6 +84,15 @@ public class CraftwandListener implements Listener {
                                         break;
                                     case REDSTONE:
                                         block = Material.REDSTONE_BLOCK;
+                                        break;
+                                    case SULPHUR:
+                                        block = Material.TNT;
+                                        break;
+                                    case DIAMOND:
+                                        block = Material.DIAMOND_BLOCK;
+                                        break;
+                                    case EMERALD:
+                                        block = Material.EMERALD_BLOCK;
                                         break;
                                     default:
                                         return;
