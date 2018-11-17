@@ -35,8 +35,11 @@ public class ToolCommands {
     public static void tools_give(CommandSender sender, @Parameter(name = "tool") Tool tool, @Parameter(name = "target") Player target) {
         target.getInventory().addItem(tool.getItemStack().clone());
 
-        if (sender instanceof Player)
-            sender.sendMessage(Style.translate("&e" + target.getName() + " &dhas been given a " + tool.getName() + "&d."));
+        if (sender instanceof Player) {
+            if (sender != target) {
+                sender.sendMessage(Style.translate("&e" + target.getName() + " &dhas been given a " + tool.getName() + "&d."));
+            }
+        }
         target.sendMessage(Style.translate("&dYou have been given a " + tool.getName() + "&d."));
     }
 
