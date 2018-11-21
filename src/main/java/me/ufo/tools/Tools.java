@@ -1,5 +1,6 @@
 package me.ufo.tools;
 
+import me.ufo.tools.commands.ToolCommands;
 import me.ufo.tools.fastblockupdate.FastBlockUpdate;
 import me.ufo.tools.fastblockupdate.impl.FastBlockUpdate_1_8_R3;
 import me.ufo.tools.integration.Econ;
@@ -45,9 +46,7 @@ public class Tools extends JavaPlugin {
 
         this.saveDefaultConfig();
 
-        CommandHandler.init();
-        CommandHandler.loadCommandsFromPackage(this, "me.ufo.tools.commands");
-
+        this.getCommand("tools").setExecutor(new ToolCommands());
         ListenerHandler.loadListenersFromPackage(this, "me.ufo.tools.listeners");
 
         toolItems = new ToolItems();

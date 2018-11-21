@@ -3,3 +3,5 @@ author: ufo
 version: 1.0
 main: me.ufo.tools.Tools
 depend: [Factions, WorldGuard, Vault, mcMMO]
+commands:
+  tools:

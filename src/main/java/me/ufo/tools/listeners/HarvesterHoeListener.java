@@ -4,6 +4,7 @@ import me.ufo.tools.integration.Factions;
 import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
+import me.ufo.tools.util.Style;
 import me.ufo.tools.util.items.NBTItem;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -92,7 +93,13 @@ public class HarvesterHoeListener implements Listener {
 
                     if (amount > 0) {
                         ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
-                        player.getInventory().addItem(sugarcane);
+
+                        if (player.getInventory().firstEmpty() == -1) {
+                            player.getWorld().dropItemNaturally(player.getLocation(), sugarcane);
+                            player.sendMessage(Style.translate("&cYour inventory is full, dropping sugarcane."));
+                        } else {
+                            player.getInventory().addItem(sugarcane);
+                        }
 
                         Mcmmo.addXPToPlayer(player, "Herbalism", amount, "UNKNOWN");
                     }
