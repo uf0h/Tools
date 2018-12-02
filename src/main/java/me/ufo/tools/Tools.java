@@ -9,7 +9,6 @@ import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.impl.Extras;
 import me.ufo.tools.tools.impl.ToolItems;
-import me.ufo.tools.util.command.CommandHandler;
 import me.ufo.tools.util.listener.ListenerHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -76,6 +75,5 @@ public class Tools extends JavaPlugin {
     public FastBlockUpdate getFastBlockUpdate() {
         return fastBlockUpdate;
     }
-
 
 }
