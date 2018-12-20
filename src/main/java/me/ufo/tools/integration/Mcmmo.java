@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class Mcmmo {
 
     public static void addXPToPlayer(Player player, String skill, int amount, String reason) {
-        ExperienceAPI.addRawXP(player, skill, (float) amount, reason);
+        ExperienceAPI.addRawXP(player, skill, (float) amount);
     }
 
     public void setup() {
