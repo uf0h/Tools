@@ -22,26 +22,24 @@ public class SellwandListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        ItemStack item = event.getPlayer().getItemInHand();
-        if (item != null && item.hasItemMeta()) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.SELLWAND.toString())) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().hasItemMeta()) {
+            if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.SELLWAND.toString())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);
                     if (event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
 
-                        if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock(), "use")) return;
+                        if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
                         if (!Worldguard.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
 
-                        Chest chest = (Chest) event.getClickedBlock().getState();
-                        Inventory inventory = chest.getInventory();
+                        final Chest chest = (Chest) event.getClickedBlock().getState();
+                        final Inventory inventory = chest.getInventory();
 
                         double cost = 0.0;
 
                         for (int i = 0; i < inventory.getSize(); i++) {
                             if (inventory.getItem(i) == null) continue;
 
-                            ItemStack itemStack = inventory.getItem(i);
+                            final ItemStack itemStack = inventory.getItem(i);
                             if (isSellable(itemStack.getType())) {
                                 cost += getSellableItemCost(itemStack.getType()) * itemStack.getAmount();
                                 inventory.setItem(i, new ItemStack(Material.AIR));

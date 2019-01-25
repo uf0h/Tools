@@ -1,7 +1,7 @@
 package me.ufo.tools.listeners;
 
+import me.ufo.tools.Tools;
 import me.ufo.tools.integration.Factions;
-import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.Style;
@@ -25,21 +25,19 @@ public class HarvesterHoeListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 
-        ItemStack item = event.getPlayer().getItemInHand();
-        if (item != null && item.hasItemMeta()) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.HARVESTERHOE.toString())) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().hasItemMeta()) {
+            if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.HARVESTERHOE.toString())) {
                 event.setCancelled(true);
                 if (event.getBlock().getType() == Material.SUGAR_CANE_BLOCK) {
-                    Block block = event.getBlock();
-                    Player player = event.getPlayer();
-                    Location loc = player.getLocation().clone();
+                    final Block block = event.getBlock();
+                    final Player player = event.getPlayer();
+                    final Location loc = player.getLocation().clone();
                     loc.setPitch(0);
 
-                    if (!Factions.playerCanPlaceHere(player, block, "break")) return;
+                    if (!Factions.playerCanPlaceHere(player, block)) return;
                     if (!Worldguard.playerCanPlaceHere(player, block)) return;
 
-                    List<Block> line = new ArrayList<>();
+                    final List<Block> line = new ArrayList<>();
                     for (int i = 1; i <= 6; i++) {
                         if (!line.contains(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock())) {
                             line.add(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock());
@@ -64,7 +62,7 @@ public class HarvesterHoeListener implements Listener {
                         }
                     }
 
-                    List<Block> toAdd = new ArrayList<>();
+                    final List<Block> toAdd = new ArrayList<>();
 
                     for (int i = 0; i < 3; i++) {
                         for (Block b : new ArrayList<>(line)) {
@@ -92,7 +90,7 @@ public class HarvesterHoeListener implements Listener {
                     int amount = breakCane(line);
 
                     if (amount > 0) {
-                        ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
+                        final ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
 
                         if (player.getInventory().firstEmpty() == -1) {
                             player.getWorld().dropItemNaturally(player.getLocation(), sugarcane);
@@ -100,8 +98,6 @@ public class HarvesterHoeListener implements Listener {
                         } else {
                             player.getInventory().addItem(sugarcane);
                         }
-
-                        Mcmmo.addXPToPlayer(player, "Herbalism", amount, "UNKNOWN");
                     }
                 }
             }
@@ -109,7 +105,7 @@ public class HarvesterHoeListener implements Listener {
     }
 
     private int breakCane(List<Block> line) {
-        TreeMap<Double, Block> tree = new TreeMap<>(Collections.reverseOrder());
+        final TreeMap<Double, Block> tree = new TreeMap<>(Collections.reverseOrder());
         int amountBroken = 0;
         for (Block block : line) {
             if (block.getRelative(BlockFace.DOWN).getType() == Material.SUGAR_CANE_BLOCK) {
@@ -121,9 +117,9 @@ public class HarvesterHoeListener implements Listener {
         }
 
         for (double d : tree.keySet()) {
-            Block bl = tree.get(d);
+            final Block bl = tree.get(d);
             bl.getLocation().getWorld().playEffect(bl.getLocation().add(0.5, 0.5, 0.5), Effect.HAPPY_VILLAGER, 0);
-            bl.setType(Material.AIR);
+            Tools.getInstance().getFastBlockUpdate().run(bl.getLocation(), Material.AIR, false);
         }
 
         return amountBroken;

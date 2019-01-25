@@ -2,7 +2,6 @@ package me.ufo.tools.listeners;
 
 import me.ufo.tools.Tools;
 import me.ufo.tools.integration.Factions;
-import me.ufo.tools.integration.Mcmmo;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
@@ -22,14 +21,11 @@ public class TrenchPickListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 
-        ItemStack item = event.getPlayer().getItemInHand();
-        if (item != null && item.hasItemMeta()) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.TRENCHPICK.toString())) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().hasItemMeta()) {
+            if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.TRENCHPICK.toString())) {
                 event.setCancelled(true);
 
                 process(event.getBlock().getLocation(), event.getPlayer());
-
             }
         }
     }
@@ -38,18 +34,17 @@ public class TrenchPickListener implements Listener {
         int RADIUS = 2;
         for (int x = location.getBlockX() - RADIUS; x <= location.getBlockX() + RADIUS; x++) {
             for (int z = location.getBlockZ() - RADIUS; z <= location.getBlockZ() + RADIUS; z++) {
-                if (Factions.playerCanPlaceHere(player, new Location(location.getWorld(), x, location.getY(), z).getBlock(), "break") &&
-                        Worldguard.playerCanPlaceHere(player, new Location(location.getWorld(), x, location.getY(), z).getBlock())) {
+                final Location toBeChecked = new Location(location.getWorld(), x, location.getY(), z);
+                if (Factions.playerCanPlaceHere(player, toBeChecked.getBlock()) &&
+                        Worldguard.playerCanPlaceHere(player, toBeChecked.getBlock())) {
 
                     for (int y = location.getBlockY() - RADIUS; y <= location.getBlockY() + RADIUS; y++) {
-                        Location block = new Location(location.getWorld(), x, y, z);
+                        final Location block = new Location(location.getWorld(), x, y, z);
 
                         if (isOutsideOfBorder(block.getBlock())) continue;
                         if (isNotBreakable(block.getBlock().getType())) continue;
 
-                        Tools.getInstance().getFastBlockUpdate().run(block, Material.AIR);
-
-                        Mcmmo.addXPToPlayer(player, "Mining", 50, "UNKNOWN");
+                        Tools.getInstance().getFastBlockUpdate().run(block, Material.AIR, false);
                     }
                 }
             }
@@ -60,23 +55,22 @@ public class TrenchPickListener implements Listener {
         switch (material) {
             case AIR:
             case BEDROCK:
+            case BEACON:
             case MOB_SPAWNER:
             case CHEST:
             case TRAPPED_CHEST:
             case HOPPER:
-            case DIAMOND_ORE:
-            case GOLD_ORE:
                 return true;
         }
         return false;
     }
 
     private boolean isOutsideOfBorder(Block block) {
-        Location loc = block.getLocation();
-        WorldBorder border = block.getWorld().getWorldBorder();
-        double size = border.getSize() / 2;
-        Location center = border.getCenter();
-        double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
+        final Location loc = block.getLocation();
+        final WorldBorder border = block.getWorld().getWorldBorder();
+        final double size = border.getSize() / 2;
+        final Location center = border.getCenter();
+        final double x = loc.getX() - center.getX(), z = loc.getZ() - center.getZ();
         return ((x >= size || (-x) > size) || (z >= size || (-z) > size));
     }
 

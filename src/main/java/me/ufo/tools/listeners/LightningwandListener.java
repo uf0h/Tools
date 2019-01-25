@@ -31,10 +31,8 @@ public class LightningwandListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        ItemStack item = event.getPlayer().getItemInHand();
-        if (item != null && item.hasItemMeta()) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.LIGHTNINGWAND.toString())) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().hasItemMeta()) {
+            if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.LIGHTNINGWAND.toString())) {
                 if (event.getAction() == Action.RIGHT_CLICK_AIR ||
                         event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     event.setCancelled(true);

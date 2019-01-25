@@ -37,16 +37,14 @@ public class SandwandListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        ItemStack item = event.getPlayer().getItemInHand();
-        if (item != null && item.hasItemMeta()) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey(ToolType.SANDWAND.toString())) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().hasItemMeta()) {
+            if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.SANDWAND.toString())) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     event.setCancelled(true);
 
                     if (event.getClickedBlock() == null) return;
 
-                    if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock(), "use")) return;
+                    if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
                     if (!Worldguard.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
 
                     final Player player = event.getPlayer();
@@ -67,7 +65,7 @@ public class SandwandListener implements Listener {
                         final Queue<Block> blocks = new LinkedList<>();
                         getSandBlocks(event.getClickedBlock(), blocks::add);
 
-                        Bukkit.getServer().getScheduler().runTask(Tools.getInstance(), () -> blocks.forEach(block -> block.setType(Material.AIR)));
+                        Tools.getInstance().getServer().getScheduler().runTask(Tools.getInstance(), () -> blocks.forEach(block -> Tools.getInstance().getFastBlockUpdate().run(block.getLocation(), Material.AIR, true)));
                     }
                 }
             }

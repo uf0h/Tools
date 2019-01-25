@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class Factions {
 
-    public static boolean playerCanPlaceHere(Player player, Block block, String action) {
+    public static boolean playerCanPlaceHere(Player player, Block block) {
         return EnginePermBuild.canPlayerBuildAt(player, PS.valueOf(block), true);
     }
 
