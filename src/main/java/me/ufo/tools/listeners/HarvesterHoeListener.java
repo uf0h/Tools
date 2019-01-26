@@ -1,8 +1,10 @@
 package me.ufo.tools.listeners;
 
+import me.ufo.collectors.collector.CollectionType;
+import me.ufo.collectors.collector.Collector;
+import me.ufo.collectors.integration.Factions;
+import me.ufo.collectors.integration.Worldguard;
 import me.ufo.tools.Tools;
-import me.ufo.tools.integration.Factions;
-import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.Style;
 import me.ufo.tools.util.items.NBTItem;
@@ -29,74 +31,95 @@ public class HarvesterHoeListener implements Listener {
             if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.HARVESTERHOE.toString())) {
                 event.setCancelled(true);
                 if (event.getBlock().getType() == Material.SUGAR_CANE_BLOCK) {
-                    final Block block = event.getBlock();
                     final Player player = event.getPlayer();
-                    final Location loc = player.getLocation().clone();
-                    loc.setPitch(0);
 
-                    if (!Factions.playerCanPlaceHere(player, block)) return;
-                    if (!Worldguard.playerCanPlaceHere(player, block)) return;
-
-                    final List<Block> line = new ArrayList<>();
-                    for (int i = 1; i <= 6; i++) {
-                        if (!line.contains(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock())) {
-                            line.add(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock());
-                        }
+                    if (!Factions.playerCanPlaceHere(player, event.getBlock()) ||
+                            !Worldguard.playerCanPlaceHere(player, event.getBlock())) {
+                        event.setCancelled(true);
+                        return;
                     }
 
-                    //Gets the sugarcane on the side of the main line of sight
-                    for (Block b : new ArrayList<>(line)) {
-                        Block b1 = b.getRelative(BlockFace.WEST);
-                        Block b2 = b.getRelative(BlockFace.EAST);
+                    if (Collector.chunkHasCollector(event.getBlock().getLocation())) {
+                        final Collector collector = Collector.get(event.getBlock().getLocation());
+                        int amountOfCane = 0;
 
-                        if ((player.getLocation().getYaw() > -135 && player.getLocation().getYaw() < -45) ||
-                                (player.getLocation().getYaw() < 135 && player.getLocation().getYaw() > 45)) {
-                            b1 = b.getRelative(BlockFace.NORTH);
-                            b2 = b.getRelative(BlockFace.SOUTH);
+                        Block next = event.getBlock();
+                        while (next != null && next.getType() == Material.SUGAR_CANE_BLOCK) {
+                            Tools.getInstance().getFastBlockUpdate().run(next.getLocation(), Material.AIR, false);
+                            amountOfCane += 2;
+                            next = next.getRelative(BlockFace.UP);
                         }
+                        collector.increment(CollectionType.SUGAR_CANE, amountOfCane);
+                    } else {
+                        // DEFAULT FUNCTIONALITY
+                        final Location loc = player.getLocation().clone();
+                        loc.setPitch(0);
 
-                        if (b1.getType() == Material.SUGAR_CANE_BLOCK) {
-                            line.add(b1);
-                        } else if (b2.getType() == Material.SUGAR_CANE_BLOCK) {
-                            line.add(b2);
-                        }
-                    }
-
-                    final List<Block> toAdd = new ArrayList<>();
-
-                    for (int i = 0; i < 3; i++) {
-                        for (Block b : new ArrayList<>(line)) {
-                            Block up = b.getLocation().clone().add(0, i + 1, 0).getBlock();
-
-                            if (up.getType() == Material.SUGAR_CANE_BLOCK) {
-                                toAdd.add(up);
+                        final List<Block> line = new ArrayList<>();
+                        for (int i = 1; i <= 6; i++) {
+                            if (!line.contains(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock())) {
+                                line.add(loc.clone().add(loc.getDirection().normalize().multiply(i).toLocation(loc.getWorld())).getBlock());
                             }
                         }
-                    }
 
-                    toAdd.forEach(bl -> {
-                        if (!line.contains(bl)) {
-                            line.add(bl);
+                        //Gets the sugarcane on the side of the main line of sight
+                        for (Block b : new ArrayList<>(line)) {
+                            Block b1 = b.getRelative(BlockFace.WEST);
+                            Block b2 = b.getRelative(BlockFace.EAST);
+
+                            if ((player.getLocation().getYaw() > -135 && player.getLocation().getYaw() < -45) ||
+                                    (player.getLocation().getYaw() < 135 && player.getLocation().getYaw() > 45)) {
+                                b1 = b.getRelative(BlockFace.NORTH);
+                                b2 = b.getRelative(BlockFace.SOUTH);
+                            }
+
+                            if (b1.getType() == Material.SUGAR_CANE_BLOCK) {
+                                line.add(b1);
+                            } else if (b2.getType() == Material.SUGAR_CANE_BLOCK) {
+                                line.add(b2);
+                            }
                         }
-                    });
 
-                    // Removes non-sugarcane
-                    for (Block b : new ArrayList<>(line)) {
-                        if (b.getType() != Material.SUGAR_CANE_BLOCK) {
-                            line.remove(b);
+                        final List<Block> toAdd = new ArrayList<>();
+
+                        for (int i = 0; i < 3; i++) {
+                            for (Block b : new ArrayList<>(line)) {
+                                Block up = b.getLocation().clone().add(0, i + 1, 0).getBlock();
+
+                                if (up.getType() == Material.SUGAR_CANE_BLOCK) {
+                                    toAdd.add(up);
+                                }
+                            }
                         }
-                    }
 
-                    int amount = breakCane(line);
+                        toAdd.forEach(bl -> {
+                            if (!line.contains(bl)) {
+                                line.add(bl);
+                            }
+                        });
 
-                    if (amount > 0) {
-                        final ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
 
-                        if (player.getInventory().firstEmpty() == -1) {
-                            player.getWorld().dropItemNaturally(player.getLocation(), sugarcane);
-                            player.sendMessage(Style.translate("&cYour inventory is full, dropping sugarcane."));
-                        } else {
-                            player.getInventory().addItem(sugarcane);
+                        // Removes non-sugarcane
+                        for (Block b : new ArrayList<>(line)) {
+                            if (b.getType() != Material.SUGAR_CANE_BLOCK) {
+                                line.remove(b);
+                            }
+                        }
+
+                        final int amount = breakCane(line);
+
+                        toAdd.clear();
+                        line.clear();
+
+                        if (amount > 0) {
+                            final ItemStack sugarcane = new ItemStack(Material.SUGAR_CANE, amount);
+
+                            if (player.getInventory().firstEmpty() == -1) {
+                                player.getWorld().dropItem(player.getLocation(), sugarcane);
+                                player.sendMessage(Style.translate("&cYour inventory is full, dropping sugarcane."));
+                            } else {
+                                player.getInventory().addItem(sugarcane);
+                            }
                         }
                     }
                 }
@@ -112,7 +135,6 @@ public class HarvesterHoeListener implements Listener {
                 amountBroken++;
 
                 tree.put(block.getY() + new Random().nextDouble(), block);
-
             }
         }
 
@@ -121,6 +143,8 @@ public class HarvesterHoeListener implements Listener {
             bl.getLocation().getWorld().playEffect(bl.getLocation().add(0.5, 0.5, 0.5), Effect.HAPPY_VILLAGER, 0);
             Tools.getInstance().getFastBlockUpdate().run(bl.getLocation(), Material.AIR, false);
         }
+
+        tree.clear();
 
         return amountBroken;
     }

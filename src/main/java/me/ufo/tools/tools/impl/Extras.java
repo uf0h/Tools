@@ -1,14 +1,9 @@
 package me.ufo.tools.tools.impl;
 
-import me.ufo.tools.Tools;
-import org.bukkit.Material;
-
-import java.util.HashMap;
-import java.util.List;
-
 public class Extras {
 
-    public HashMap<Material, Double> sellableItems = new HashMap<>();
+    // DEFAULT FUNCTIONALITY
+    /*public HashMap<Material, Double> sellableItems = new HashMap<>();
     private Tools INSTANCE = Tools.getInstance();
 
     public void build() {
@@ -25,6 +20,6 @@ public class Extras {
 
     public HashMap<Material, Double> getSellableItems() {
         return sellableItems;
-    }
+    }*/
 
 }

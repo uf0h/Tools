@@ -5,6 +5,7 @@ import me.ufo.tools.fastblockupdate.FastBlockUpdate;
 import me.ufo.tools.fastblockupdate.impl.FastBlockUpdate_1_8_R3;
 import me.ufo.tools.integration.Econ;
 import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Outpost;
 import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.impl.Extras;
 import me.ufo.tools.tools.impl.ToolItems;
@@ -16,7 +17,7 @@ public class Tools extends JavaPlugin {
     private static Tools instance;
 
     private ToolItems toolItems;
-    private Extras extras;
+    //private Extras extras;
 
     private FastBlockUpdate fastBlockUpdate;
 
@@ -39,6 +40,9 @@ public class Tools extends JavaPlugin {
         Worldguard worldguard = new Worldguard();
         worldguard.setup();
 
+        Outpost outpost = new Outpost();
+        outpost.setup();
+
         this.saveDefaultConfig();
 
         this.getCommand("tools").setExecutor(new ToolCommands());
@@ -47,8 +51,9 @@ public class Tools extends JavaPlugin {
         toolItems = new ToolItems();
         toolItems.build();
 
-        extras = new Extras();
-        extras.build();
+        // DEFAULT FUNCTIONALITY
+        /*extras = new Extras();
+        extras.build();*/
 
         fastBlockUpdate = new FastBlockUpdate_1_8_R3();
 
@@ -64,9 +69,10 @@ public class Tools extends JavaPlugin {
         return toolItems;
     }
 
-    public Extras getExtras() {
+    // DEFAULT FUNCTIONALITY
+    /*public Extras getExtras() {
         return extras;
-    }
+    }*/
 
     public FastBlockUpdate getFastBlockUpdate() {
         return fastBlockUpdate;

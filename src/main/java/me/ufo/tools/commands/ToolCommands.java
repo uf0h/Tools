@@ -3,6 +3,7 @@ package me.ufo.tools.commands;
 import me.ufo.tools.Tools;
 import me.ufo.tools.tools.Tool;
 import me.ufo.tools.tools.ToolType;
+import me.ufo.tools.tools.impl.ToolItems;
 import me.ufo.tools.util.Style;
 import me.ufo.tools.util.items.ItemBuilder;
 import org.bukkit.ChatColor;
@@ -33,7 +34,7 @@ public class ToolCommands implements CommandExecutor {
         if (args[0].equalsIgnoreCase("list")) {
             sender.sendMessage(new String[]{
                     Style.getBorderLine(),
-                    Style.translate("&e" + Arrays.toString(ToolType.values())),
+                    Style.translate("&e" + Tools.getInstance().getToolItems().getAllTools().keySet().toString()),
                     Style.getBorderLine()
             });
 
@@ -63,9 +64,8 @@ public class ToolCommands implements CommandExecutor {
             int amount;
             try {
                 amount = Integer.parseInt(args[3]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + "That is not a valid number.");
-                return false;
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                amount = 1;
             }
 
             target.getInventory().addItem(new ItemBuilder(tool.getItemStack().clone()).setAmount(amount).build());

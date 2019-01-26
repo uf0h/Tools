@@ -7,6 +7,7 @@ public enum ToolType {
     CRAFTWAND,
     LIGHTNINGWAND,
     TRENCHPICK,
-    SANDWAND;
+    SANDWAND,
+    TNTWAND;
 
 }

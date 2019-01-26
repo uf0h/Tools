@@ -1,22 +1,18 @@
 package me.ufo.tools.listeners;
 
-import me.ufo.tools.Tools;
+import com.massivecraft.factions.entity.MPlayer;
+import me.ufo.collectors.collector.CollectionType;
+import me.ufo.collectors.collector.Collector;
 import me.ufo.tools.integration.Econ;
-import me.ufo.tools.integration.Factions;
-import me.ufo.tools.integration.Worldguard;
+import me.ufo.tools.integration.Outpost;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.items.NBTItem;
-import me.ufo.tools.util.items.Ref;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.text.DecimalFormat;
 
 public class SellwandListener implements Listener {
 
@@ -26,7 +22,38 @@ public class SellwandListener implements Listener {
             if (new NBTItem(event.getPlayer().getItemInHand()).hasKey(ToolType.SELLWAND.toString())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     event.setCancelled(true);
-                    if (event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
+
+                    if (event.getClickedBlock().getType() == Material.BEACON) {
+                        if (Collector.isCollector(event.getClickedBlock().getLocation())) {
+                            final Collector collector = Collector.get(event.getClickedBlock().getLocation());
+                            if (collector != null) {
+                                double totalValue = collector.getAmounts().entrySet().stream()
+                                        .filter(entry -> entry.getKey() != CollectionType.CREEPER && entry.getValue() > 0)
+                                        .mapToDouble(entry -> (entry.getValue() * entry.getKey().getSellPrice())).sum();
+
+                                if (totalValue == 0) {
+                                    event.getPlayer().sendMessage(ChatColor.RED.toString() + "This collector has a total value of " + ChatColor.GREEN.toString() + "$" + totalValue + ChatColor.RED.toString() + ".");
+                                    return;
+                                }
+
+                                if (Outpost.isFactionControllingOutpost(MPlayer.get(event.getPlayer()).getFaction())) {
+                                    totalValue *= 2;
+                                    event.getPlayer().sendMessage(ChatColor.RED.toString() + "You will receive " + ChatColor.GREEN.toString() + "x2" + ChatColor.RED.toString() + " value as you are controlling outpost.");
+                                }
+
+                                collector.getAmounts().entrySet().stream()
+                                        .filter(entry -> entry.getKey() != CollectionType.CREEPER && entry.getValue() > 0)
+                                        .forEach(entry -> entry.setValue(0));
+
+                                if (Econ.depositAmountToPlayer(event.getPlayer(), totalValue)) {
+                                    event.getPlayer().sendMessage(ChatColor.GREEN.toString() + "+$" + totalValue + ChatColor.RED.toString() + " from selling everything in this collector.");
+                                }
+                            }
+                        }
+                    }
+
+                    // DEFAULT FUNCTIONALITY
+                    /*if (event.getClickedBlock().getType() == Material.CHEST || event.getClickedBlock().getType() == Material.TRAPPED_CHEST) {
 
                         if (!Factions.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
                         if (!Worldguard.playerCanPlaceHere(event.getPlayer(), event.getClickedBlock())) return;
@@ -51,7 +78,7 @@ public class SellwandListener implements Listener {
                             Ref.sendActionBar(event.getPlayer(), "&a&l+$" + new DecimalFormat(".##").format(cost));
                         }
 
-                    }
+                    }*/
                 } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     switch (event.getClickedBlock().getType()) {
                         case GRASS:
@@ -64,12 +91,12 @@ public class SellwandListener implements Listener {
         }
     }
 
-    private boolean isSellable(Material material) {
+    /*private boolean isSellable(Material material) {
         return Tools.getInstance().getExtras().getSellableItems().containsKey(material);
     }
 
     private Double getSellableItemCost(Material material) {
         return Tools.getInstance().getExtras().getSellableItems().get(material);
-    }
+    }*/
 
 }

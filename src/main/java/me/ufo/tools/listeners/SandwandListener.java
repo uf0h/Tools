@@ -78,6 +78,8 @@ public class SandwandListener implements Listener {
             toBeChecked = block.getWorld().getBlockAt(block.getX(), y, block.getZ());
             if (toBeChecked.getType().hasGravity()) {
                 consumer.accept(toBeChecked);
+            } else {
+                break; // once it hits another block
             }
         }
     }
