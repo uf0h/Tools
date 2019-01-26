@@ -2,9 +2,9 @@ package me.ufo.tools.listeners;
 
 import me.ufo.collectors.collector.CollectionType;
 import me.ufo.collectors.collector.Collector;
-import me.ufo.collectors.integration.Factions;
-import me.ufo.collectors.integration.Worldguard;
 import me.ufo.tools.Tools;
+import me.ufo.tools.integration.Factions;
+import me.ufo.tools.integration.Worldguard;
 import me.ufo.tools.tools.ToolType;
 import me.ufo.tools.util.Style;
 import me.ufo.tools.util.items.NBTItem;
@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ import java.util.*;
 
 public class HarvesterHoeListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 
